@@ -1,13 +1,13 @@
-# cppcourse
-Repository to store the c++ exercises.
+# C++ basics
+> Repository to store the c++ exercises.
 The aim of this repositoy is to store all the small programs that I develop during the folow up of a c++ course.
 
-# Covered topics
+## Covered topics
   - 1 Introduction to computer programming (firststeps folder)
-# Examples
+## Examples
   - Simple hello world
   - Square root calculator
-# Building
+## Building
 ```sh
 $ cd firststeps
 $ mkdir build
