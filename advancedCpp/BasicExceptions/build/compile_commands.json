@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/build",
+  "command": "/usr/bin/g++-7    -g   -std=gnu++11 -o CMakeFiles/BasicExceptions.dir/src/BasicExceptions.cpp.o -c /home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/src/BasicExceptions.cpp",
+  "file": "/home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/src/BasicExceptions.cpp"
+}
+]

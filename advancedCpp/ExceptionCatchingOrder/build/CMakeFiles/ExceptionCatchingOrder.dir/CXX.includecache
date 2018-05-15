@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/tomas/Projects/git/cppcourse/advancedCpp/ExceptionCatchingOrder/src/ExceptionCatchingOrder.cpp
+iostream
+-
+exception
+-
+
