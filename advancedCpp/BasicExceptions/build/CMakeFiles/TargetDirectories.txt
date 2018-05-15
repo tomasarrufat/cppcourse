@@ -1,3 +1,0 @@
-/home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/build/CMakeFiles/rebuild_cache.dir
-/home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/build/CMakeFiles/BasicExceptions.dir
-/home/tomas/Projects/git/cppcourse/advancedCpp/BasicExceptions/build/CMakeFiles/edit_cache.dir

@@ -1,1 +1,0 @@
-/usr/bin/g++-7    -rdynamic CMakeFiles/CustomExceptions.dir/src/CustomExceptions.cpp.o  -o bin/CustomExceptions 

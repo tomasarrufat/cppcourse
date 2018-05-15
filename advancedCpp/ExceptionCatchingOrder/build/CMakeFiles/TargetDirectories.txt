@@ -1,3 +1,0 @@
-/home/tomas/Projects/git/cppcourse/advancedCpp/ExceptionCatchingOrder/build/CMakeFiles/rebuild_cache.dir
-/home/tomas/Projects/git/cppcourse/advancedCpp/ExceptionCatchingOrder/build/CMakeFiles/ExceptionCatchingOrder.dir
-/home/tomas/Projects/git/cppcourse/advancedCpp/ExceptionCatchingOrder/build/CMakeFiles/edit_cache.dir
