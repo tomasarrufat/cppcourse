@@ -26,14 +26,14 @@ class Person
             return name < other.name;
         }
 
-        void print()
+        void print() const
         {
-            std::cout<< "Person name: " << name << " and email: " << email << " and age: " << age << std::endl;
+            std::cout<< "Person's name: " << name << " and email: " << email << " and age: " << age << std::endl;
         }
 
 };
 
-void savePerson(const std::string fileName, const Person & person)
+void savePersons(const std::string fileName, const std::set<Person> & persons)
 {
     std::fstream oFile;
 
@@ -41,73 +41,83 @@ void savePerson(const std::string fileName, const Person & person)
 
     if(oFile.is_open())
     {
-        int stringLength = person.name.length() + 1;
-        std::cout << "Saving string lenght " << stringLength << std::endl;
-        oFile.write(reinterpret_cast<char *>(&stringLength), sizeof(int));
-        std::cout << "Saving string" << std::endl;
-        oFile.write(person.name.c_str(), sizeof(char[stringLength]));
-        stringLength = person.email.length() + 1;
-        oFile.write(reinterpret_cast<char *>(&stringLength), sizeof(int));
-        oFile.write(person.email.c_str(), sizeof(char[stringLength]));
-        int age = person.age;
-        oFile.write(reinterpret_cast<char *>(&age), sizeof(int));
-        std::cout << "Person saved" << std::endl;
+        int mapSize = persons.size();
+        oFile.write(reinterpret_cast<char *>(&mapSize), sizeof(int));
+
+        for( auto person = persons.begin(); person != persons.end(); person++ )
+        {
+            std::cout << "Saving person " << person->name << std::endl;
+            int stringLength = person->name.length() + 1;
+            //std::cout << "Saving string lenght " << stringLength << std::endl;
+            oFile.write(reinterpret_cast<char *>(&stringLength), sizeof(int));
+            //std::cout << "Saving string" << std::endl;
+            oFile.write(person->name.c_str(), sizeof(char[stringLength]));
+            stringLength = person->email.length() + 1;
+            oFile.write(reinterpret_cast<char *>(&stringLength), sizeof(int));
+            oFile.write(person->email.c_str(), sizeof(char[stringLength]));
+            int age = person->age;
+            oFile.write(reinterpret_cast<char *>(&age), sizeof(int));
+            //std::cout << "Person saved" << std::endl;
+        }
 
         oFile.close();
     }
     else
     {
         std::cout << "Couldn't read: " + fileName << std::endl;
-
     }
 
 }
 
-Person loadPerson(const std::string fileName)
+void loadPersons(const std::string fileName, std::set<Person> &persons )
 {
     std::fstream iFile;
-
-    Person person;
 
     iFile.open( fileName, std::ios::binary|std::ios::in );
 
     if(iFile.is_open())
     {
-        int stringLength = 0;
-        
-        iFile.get(reinterpret_cast<char *>(&stringLength), sizeof(int));
-        std::cout << "Loading string lenght: " << stringLength << std::endl;
+        int mapSize = 0;
+        iFile.get(reinterpret_cast<char *>(&mapSize), sizeof(int));
         iFile.get();
-        char name[stringLength];
-        
-        iFile.get(name, sizeof(char[stringLength]));
-        std::cout << "Loading name: " << std::string(name) << std::endl;
-        iFile.get();
-        iFile.get(reinterpret_cast<char *>(&stringLength), sizeof(int));
-        std::cout << "Loading string lenght: " << stringLength << std::endl;
-        iFile.get();
-        char email[stringLength];
-        iFile.get(email, sizeof(char[stringLength]));
-        std::cout << "Loading email: " << std::string(email) << std::endl;
-        iFile.get();
-        int age;
-        iFile.get(reinterpret_cast<char *>(&age), sizeof(int));
-        iFile.get();
-        std::cout << "Person Loaded" << std::endl;
 
+        for(int i = 0; i < mapSize; i++)
+        {
+            std::cout << "Loading person " << std::flush;
+            int stringLength = 0;
+
+            iFile.get(reinterpret_cast<char *>(&stringLength), sizeof(int));
+            iFile.get();
+            char name[stringLength];
+
+            iFile.get(name, sizeof(char[stringLength]));
+            std::cout << std::string(name) << std::endl;
+            iFile.get();
+            iFile.get(reinterpret_cast<char *>(&stringLength), sizeof(int));
+            iFile.get();
+            char email[stringLength];
+            iFile.get(email, sizeof(char[stringLength]));
+            iFile.get();
+            int age;
+            iFile.get(reinterpret_cast<char *>(&age), sizeof(int));
+            iFile.get();
+
+            persons.insert(Person(std::string(name),std::string(email),age));
+        }
         iFile.close();
-
-        person.name = std::string(name);
-        person.email = std::string(email);
-        person.age = age;
     }
     else
     {
         std::cout << "Couldn't read: " + fileName << std::endl;
-
     }
+}
 
-    return person;
+void printSet(const std::set<Person> inputs)
+{
+    for( auto input = inputs.begin(); input != inputs.end(); input++ )
+    {
+        input->print();
+    }
 }
 
 int main()
@@ -117,17 +127,16 @@ int main()
 
     std::set<Person> people;
 
-    Person first = Person("Tomas", "tomasarrufat@gmail.com", 27);
+    people.insert(Person("Tomas", "tomasarrufat@gmail.com", 27));
+    people.insert(Person("Yuri", "clairejang@gmail.com", 27));
 
-    first.print();
+    savePersons("test.bin", people);
 
-    //people.insert(Person("Tomas", "tomasarrufat@gmail.com", 27));
+    std::set<Person> loadedPeople;
 
-    savePerson("test.bin", first);
+    loadPersons("test.bin", loadedPeople);
 
-    Person second = loadPerson("test.bin");
-
-    second.print();
+    printSet(loadedPeople);
     
     return 0;
 }
