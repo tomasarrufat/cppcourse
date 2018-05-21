@@ -4,8 +4,6 @@
 #include <fstream>
 #include <set>
 
-const int string_size = 50;
-
 
 class Person
 {
@@ -140,4 +138,6 @@ int main()
     
     return 0;
 }
+
+//Add Found functionality
 
