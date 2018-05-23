@@ -6,10 +6,11 @@
 
 class Person
 {
-    public:
+    private:
         std::string name;
         std::string email;
         int age;
+    public:
     // Methods
         Person( const Person & other ): name(other.name), email(other.email), age(other.age) {}
         Person( std::string p_name, std::string p_email, int p_age): name(p_name), email(p_email), age(p_age){}
@@ -27,6 +28,8 @@ class Person
         {
             std::cout<< "Person's name: " << name << " and email: " << email << " and age: " << age << std::endl;
         }
+
+        friend bool compare(const Person &first, const Person &second );
 
 };
 

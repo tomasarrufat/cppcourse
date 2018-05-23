@@ -23,81 +23,89 @@ class Complex
             return *this;
         }
 
-        Complex &operator+(const Complex &other)
-        {
-            real += other.real;
-            imaginary += other.imaginary;
+        friend std::ostream &operator<<( std::ostream &out, const Complex &output );
+        friend const Complex operator+(const Complex &lhs, const Complex &rhs);
+        friend const Complex operator+(const Complex &lhs, const double &rhs);
+        friend const Complex operator-(const Complex &lhs, const Complex &rhs);
+        friend const Complex operator-(const Complex &lhs, const double &rhs);
+        friend const Complex operator*(const Complex &lhs, const Complex &rhs);
+        friend const Complex operator*(const Complex &lhs, const double &rhs);
+        friend const Complex operator/(const Complex &lhs, const double &rhs);
+        friend const Complex operator/(const Complex &lhs, const Complex &rhs);
 
-            return *this; 
-        }
+};
 
-        Complex &operator+(const double &other)
-        {
-            real += other;
+std::ostream &operator<<( std::ostream &out, const Complex &output )
+{
+    out << output.real << " " << output.imaginary << "i";
+    return out;
+};
 
-            return *this; 
-        }
+const Complex operator+(const Complex &lhs, const Complex &rhs)
+{
+    return Complex( lhs.real + rhs.real, lhs.imaginary + rhs.imaginary ); 
+};
 
-        Complex &operator-(const Complex &other)
-        {
-            real -= other.real;
-            imaginary -= other.imaginary;
-            
-            return *this;
-        }
+const Complex operator+(const Complex &lhs, const double &rhs)
+{
+    return Complex( lhs.real + rhs, lhs.imaginary ); 
+};
 
-        Complex &operator-(const double &other)
-        {
-            real -= other;
-            
-            return *this;
-        }
+const Complex operator-(const Complex &lhs, const Complex &rhs)
+{
+    return Complex(lhs.real - rhs.real, lhs.imaginary - rhs.imaginary);
+};
 
-        Complex &operator*(const Complex &other)
-        {
-            // (x + iy)*(u + iv) = (xu - yv) + i(xv + yu)
-            real = real * other.real - imaginary * other.imaginary;
-            imaginary = real * other.imaginary + imaginary * other.real;
+const Complex operator-(const Complex &lhs, const double &rhs)
+{
+    return Complex(lhs.real - rhs, lhs.imaginary);
+};
 
-            return * this;
-        }
+const Complex operator*(const Complex &lhs, const Complex &rhs)
+{
+    // (x + iy)*(u + iv) = (xu - yv) + i(xv + yu)
+    double real = lhs.real * rhs.real - lhs.imaginary * rhs.imaginary;
+    double imaginary = lhs.real * rhs.imaginary + lhs.imaginary * rhs.real;
 
-        Complex &operator*(const double &other)
-        {
-            real = real * other;
-            imaginary = imaginary * other;
+    return Complex(real, imaginary);
+};
 
-            return * this;
-        }
+const Complex operator*(const Complex &lhs, const double &rhs)
+{
+    return Complex(lhs.real * rhs, lhs.imaginary * rhs);
+};
 
-        Complex &operator/(const double &other)
-        {
+const Complex operator/(const Complex &lhs, const double &rhs)
+{
 
-            if( other < 1E-6 )
-            {
-                throw std::invalid_argument(std::string('/' + std::to_string(other)));
-            }
-            else
-            {
-                real = real / other;
-                imaginary = imaginary / other;
-            }
+    if( rhs < 1E-6 )
+    {
+        throw std::invalid_argument(std::string('/' + std::to_string(rhs)));
+    }
 
-            return * this;
-        }
+    return Complex(lhs.real / rhs, lhs.imaginary / rhs);
+};
 
-        Complex &operator/(const Complex &other)
-        {
-            // (x + iy)/(u + iv) = (x + iy)*(u - iv) / (u + iv)*(u - iv) = (x + iy)(u + iv) / (uu + vv)
-            *this = ( (*this) * other ) / ( other.real * other.real + other.imaginary * other.imaginary);
-
-            return *this;
-        }
+const Complex operator/(const Complex &lhs, const Complex &rhs)
+{
+    // (x + iy)/(u + iv) = (x + iy)*(u - iv) / (u + iv)*(u - iv) = (x + iy)(u + iv) / (uu + vv)
+    return ( lhs * rhs ) / ( rhs.real * rhs.real + rhs.imaginary * rhs.imaginary);
 };
 
 int main()
 {
-    
+    Complex a = Complex(4.0,2.0);
+    Complex b = Complex(0.0,-3.0);
+    Complex c;
+
+    std::cout << "A is: " << a << std::endl;
+    std::cout << "B is: " << b << std::endl;
+    std::cout << "Addition A + B = " << a + b << std::endl;
+    std::cout << "Substraction A - B = " << a - b << std::endl;
+    std::cout << "Product A * B = " << a * b << std::endl;
+    std::cout << "Divtion A / B = " << a / b << std::endl;
+    c = a + b;
+
     return 0;
 }
 
