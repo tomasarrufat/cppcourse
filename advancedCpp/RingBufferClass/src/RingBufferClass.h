@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <exception>
+#include <initializer_list>
 
 template<typename T>
 class CircularRing
@@ -23,6 +24,7 @@ class CircularRing
         }
 
         void add(T input);
+        void add(std::initializer_list<T> inputs);
 
         Iterator begin();
         Iterator end();
