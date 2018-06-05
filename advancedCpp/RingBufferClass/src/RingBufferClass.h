@@ -3,6 +3,8 @@
 #include <iostream>
 #include <exception>
 #include <initializer_list>
+#include <memory>
+#include <cstring> // std::memcpy
 
 template<typename T>
 class CircularRing
@@ -10,24 +12,32 @@ class CircularRing
     private:
         int position;
         const int size;
-        T * values;
+        std::unique_ptr<T[]> values;
     public:
         class Iterator;
 
     public:
-        CircularRing(int size): position(0), size(size), values(0){
-            values = new T[size];
-        }
+        CircularRing(int size): position(0), size(size), values(new T[size]{}){};
+        CircularRing(const CircularRing &other): position(other.position),
+            size(other.size), values(new T[size]{}){
+                for(int it = 0; it < size; it++)
+                {
+                    values.get()[it] = other.values.get()[it];
+                }
+                //std::memcpy(values.get(), other.values.get(), size * sizeof(T));
+                //std::copy(other.values[0], other.values[size-1], values[0]);
+                std::cout << "Making copy of circular ring." << std::endl;
+            };
 
         ~CircularRing(){
-            delete [] values;
-        }
+            std::cout << "CircularRing destroyed" << std::endl;
+        };
 
         void add(T input);
         void add(std::initializer_list<T> inputs);
 
-        Iterator begin();
-        Iterator end();
+        Iterator begin() const;
+        Iterator end() const;
 
         int getSize() const { return size; }
 
@@ -39,10 +49,10 @@ class CircularRing<T>::Iterator
 {
     private:
         int position;
-        CircularRing<T> &ring;
+        const CircularRing<T> &ring;
 
     public:
-        Iterator(int pos, CircularRing<T> &aRing): position(pos), ring(aRing){};
+        Iterator(int pos, const CircularRing<T> &aRing): position(pos), ring(aRing){};
         bool operator!=(const CircularRing<T>::Iterator &other)const;
         Iterator &operator++(int);
         Iterator &operator++();

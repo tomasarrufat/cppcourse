@@ -24,12 +24,12 @@ void CircularRing<T>::add(std::initializer_list<T> inputs){
 };
 
 template<typename T>
-typename CircularRing<T>::Iterator CircularRing<T>::begin(){
+typename CircularRing<T>::Iterator CircularRing<T>::begin() const{
     return Iterator(0, *this);
 };
 
 template<typename T>
-typename CircularRing<T>::Iterator CircularRing<T>::end(){
+typename CircularRing<T>::Iterator CircularRing<T>::end() const{
     return Iterator(size, *this);
 };
 
@@ -75,7 +75,7 @@ T &CircularRing<T>::Iterator::operator*() const{
 };
 
 template<class T>
-void printIterable(T inputs)
+void printIterable(const T &inputs)
 {
     for(auto input : inputs)
     {
@@ -87,10 +87,12 @@ int main()
 {
 
     CircularRing<std::string> textRing(5);
+    CircularRing<std::string> textRing2(textRing);
 
 
     textRing.add({"one", "two", "three", "four", "five", "six"});
     textRing.add("seven");
+    textRing2.add("eight");
 
     for(int i = 0; i < textRing.getSize(); i++)
     {
