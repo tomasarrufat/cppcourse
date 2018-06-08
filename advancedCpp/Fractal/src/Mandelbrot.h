@@ -8,7 +8,7 @@ namespace fgen{
 
 class Mandelbrot{
         public:
-            static const int MAX_ITERATIONS = 3000;
+            static const int MAX_ITERATIONS = 18000;
 
         public:
             Mandelbrot();
