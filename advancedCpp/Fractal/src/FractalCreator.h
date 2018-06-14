@@ -5,20 +5,30 @@
 
 #include "Zoom.h"
 #include <string>
+#include <memory>
+#include <iostream>
+#include "Mandelbrot.h"
+#include "ZoomList.h"
+#include "BitMap.h"
 
 using namespace std;
 
 namespace fgen{
 
 class FractalCreator{
+        private:
+            int m_width{0};
+            int m_height{0};
+            unique_ptr<int[]> m_pHistogram;
+            unique_ptr<int[]> m_pFractal;
+            BitMap m_bitmap;
+            ZoomList m_zoomList;
         public:
-
-        public:
-            FractalCreator();
+            FractalCreator(int width, int height);
             virtual ~FractalCreator();
 
             void calculateIteration();
-            void drawFractal();
+            void drawFractal(int subSample);
             void writeBitmap(string fileName);
             void addZoom(const Zoom &zoom);
 };

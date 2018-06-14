@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 namespace fgen{
 
 ZoomList::ZoomList(int width, int height): m_width(width), m_height(height){

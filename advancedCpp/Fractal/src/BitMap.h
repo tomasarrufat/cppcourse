@@ -1,7 +1,7 @@
 // Name     : BitMap.h
 
 #ifndef BITMAP_H_
-#define BITMAP_H
+#define BITMAP_H_
 
 #include <string>
 #include <memory> // std::unique_ptr
