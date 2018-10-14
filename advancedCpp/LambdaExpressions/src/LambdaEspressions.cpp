@@ -1,13 +1,14 @@
 // Name     : LambdaExpressions.cpp
 
 #include <iostream>
+#include <functional>
 
 void addExclamation( void (*pfunction)() ){
     pfunction();
     std::cout << "!!!" << std::flush;
 };
 
-double operation( double pa, double pb, double (*oper)(double a, double b)){
+double operation( double pa, double pb, std::function<double(double,double)> oper){ // double (*oper)(double a, double b)){
     return oper(pa, pb);
 };
 
@@ -24,7 +25,7 @@ int main()
     std::cout << " called directly from lambda expression." << std::endl;
 
     addExclamation(function1);
-    std::cout << " called fron addExclamation function." << std::endl;
+    std::cout << " called from addExclamation function." << std::endl;
 
     addExclamation([](){ std::cout << "Hello there from lambda expression" << std::flush; });
     std::cout << " called fron addExclamation function." << std::endl;
