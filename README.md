@@ -1,15 +1,10 @@
 # C++ basics
 > Repository to store the c++ exercises.
-The aim of this repositoy is to store all the small programs that I develop during the folow up of a c++ course.
+The aim of this repositoy is to store all the small programs that I develop during the folow up of several c++ courses.
 
-## Covered topics
-  - 1 Introduction to computer programming (firststeps folder)
-## Examples
-  - Simple hello world
-  - Square root calculator
 ## Building
 ```sh
-$ cd firststeps
+$ cd project_name
 $ mkdir build
 $ cd build
 $ cmake -GNinja ..
