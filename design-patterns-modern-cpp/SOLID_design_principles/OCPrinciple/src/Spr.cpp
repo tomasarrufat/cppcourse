@@ -13,6 +13,7 @@ enum class Color
   brown,
   orang
 };
+
 enum class Size
 {
   small,
@@ -29,7 +30,6 @@ struct Product
 
 class ProductFilter
 {
-
 public:
   std::vector<Product *> by_color(std::vector<Product *> items, Color color)
   {

@@ -12,14 +12,10 @@ private:
   std::vector<std::string> entries;
 
 public:
-  explicit Journal(const std::string &title) : title{title}
-  {
-  }
+  explicit Journal(const std::string &title) : title{title}{}
 
   std::vector<std::string> getEntries() const;
-
   void add(const std::string &entry);
-
   // persistence is a separate concern
   void save(const std::string &filename);
 };
