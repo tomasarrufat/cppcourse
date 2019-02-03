@@ -80,14 +80,14 @@ struct ProductDisplay
 template <typename T>
 class Specification
 {
-public: 
-  virtual bool is_satisfied(T *item) = 0;
+public:
+  virtual bool is_satisfied(T *item) const = 0;
 };
 
 template <typename T>
 class Filter
 {
-  public:
+public:
   virtual std::vector<T *> filter(std::vector<T *> items, Specification<T> &spec) = 0;
 };
 
@@ -114,7 +114,7 @@ private:
 public:
   ColorSpecification(Color color) : color(color){};
 
-  bool is_satisfied(Product *item) override
+  bool is_satisfied(Product *item) const override
   {
     return item->color == color;
   }
@@ -126,28 +126,35 @@ private:
   Size size;
 
 public:
-  SizeSpecification(Size size) : size(size){};
+  SizeSpecification(Size size) : size{size} {};
 
-  bool is_satisfied(Product *item) override
+  bool is_satisfied(Product *item) const override
   {
     return item->size == size;
   }
 };
 
-template <typename T> class AndSpecification : public Specification<T>
+template <typename T>
+class AndSpecification : public Specification<T>
 {
-  
 private:
-  Specification<T>& first;
-  Specification<T>& second;
-public:
-  AndSpecification(Specification<T> &first, Specification<T> &second): first(first), second(second) {};
+  const Specification<T> &first;
+  const Specification<T> &second;
 
-  bool is_satisfied(T * item) override
+public:
+  AndSpecification(const Specification<T> &first, const Specification<T> &second) : first{first}, second{second} {};
+
+  bool is_satisfied(T *item) const override
   {
-    return first.is_satisfied(item) & second.is_satisfied(item);
+    return first.is_satisfied(item) && second.is_satisfied(item);
   }
 };
+
+template <typename T>
+AndSpecification<T> operator&&(const Specification<T> &first, const Specification<T> &second)
+{
+  return AndSpecification<T>(first, second);
+}
 
 int main()
 {
@@ -175,10 +182,10 @@ int main()
   BetterFilter bf;
   ColorSpecification green(Color::green);
   SizeSpecification large(Size::large);
-  AndSpecification<Product> green_large(green, large);
+  auto green_large_spec = green && large;
 
   std::cout << "Trying out BetterFilter: \n";
-  ProductDisplay::display(bf.filter(items, green_large), std::string(" is green and large."));
+  ProductDisplay::display(bf.filter(items, green_large_spec), std::string(" is green and large."));
 
   return 0;
 };
