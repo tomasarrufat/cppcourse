@@ -4,8 +4,9 @@
 #include <sstream>
 #include <memory>
 
-struct HtmlElement
+class HtmlElement
 {
+    friend class HtmlBuilder;
     std::string name, text;
     std::vector<HtmlElement> elements;
     const size_t indent_size = 2;
@@ -14,6 +15,7 @@ struct HtmlElement
 
     HtmlElement(const std::string &name, const std::string &text) : name(name), text(text) {}
 
+  public:
     std::string str(int indent = 0) const
     {
         bool last_element(elements.size() < 1);
@@ -42,22 +44,29 @@ struct HtmlElement
     }
 };
 
-struct HtmlBuilder
+class HtmlBuilder
 {
     HtmlElement root;
+
+    public:
 
     HtmlBuilder(std::string root_name)
     {
         root.name = root_name;
     }
 
-    void add_child(std::string child_name, std::string child_text)
+    HtmlBuilder& add_child(std::string child_name, std::string child_text)
     {
         HtmlElement e{child_name, child_text};
         root.elements.push_back(e);
+        return *this;
     }
 
+    HtmlElement& build() { return root; }
+
     std::string str() const { return root.str(); }
+
+
 };
 
 int main()
@@ -71,17 +80,23 @@ int main()
 
     std::string words[] = {"Black", "Green", "Yellow", "Brown", "Orange"};
     std::ostringstream oss;
-    oss << "<ul>\n";
+    oss << "<url>\n";
     for (auto &w : words)
         oss << "  <li>" << w << "</li>\n";
     oss << "</url>\n";
     std::cout << oss.str();
 
-    HtmlBuilder builder{"ul"};
+    /**HtmlBuilder builder{"ul"};
     for (auto &w : words)
         builder.add_child("list", w);
 
     std::cout << builder.str() << std::endl;
+    **/
+
+    auto e = HtmlBuilder("colour").add_child("list","Black").add_child("list","Green").
+        add_child("list","Yellow").add_child("list","Brown").add_child("list","Orange").build();
+
+    std::cout << e.str();
 
     return 0;
 }
