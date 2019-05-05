@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace std;
 
-#include "HotDring.hpp"
+#include "HotDrink.hpp"
 
 struct HotDrinkFactory // Abstract Factoy
 {
     virtual unique_ptr<HotDrink> make() const = 0;
 };
 
-struct TeaFactory : HotDrinkFactoy
+struct TeaFactory : HotDrinkFactory
 {
     unique_ptr<HotDrink> make() const override
     {
@@ -17,7 +17,7 @@ struct TeaFactory : HotDrinkFactoy
     }
 };
 
-struct CoffeeFactory : HotDrinkFactoy
+struct CoffeeFactory : HotDrinkFactory
 {
     unique_ptr<HotDrink> make() const override
     {
