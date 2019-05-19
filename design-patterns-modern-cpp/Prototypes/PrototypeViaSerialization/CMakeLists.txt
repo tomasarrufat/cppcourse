@@ -13,7 +13,11 @@ project(${ProjectId})
 file(GLOB project_sources src/*.cpp)
 file(GLOB project_headers src/*.h src/*.hpp)
 
-find_package( Boost REQUIRED COMPONENTS program_options serialization )
-include_directories( ${Boost_INCLUDE_DIRS} )
+find_package(Boost 1.65.1 COMPONENTS serialization REQUIRED)
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+  add_executable(${ProjectId} ${project_sources} ${project_headers})
+  target_link_libraries(${ProjectId} PUBLIC ${Boost_LIBRARIES})
+endif()
 
-add_executable(${ProjectId} ${project_sources} ${project_headers})
+
