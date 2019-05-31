@@ -6,6 +6,12 @@
 
 using namespace std;
 
+class Database
+{
+public:
+    virtual int getPopulation(const string &name) = 0;
+};
+
 class SingletonDatabase
 {
     SingletonDatabase()
@@ -20,11 +26,11 @@ class SingletonDatabase
             getline(ifs, s2);
             //cout << s << " " << s2 << endl;
             int population = boost::lexical_cast<int>(s2);
-            capitals[s] = population;
+            countries[s] = population;
         }
     }
 
-    map<string, int> capitals;
+    map<string, int> countries;
 
 public:
     SingletonDatabase(SingletonDatabase const &) = delete;
@@ -38,7 +44,25 @@ public:
 
     int getPopulation(const string &name)
     {
-        return capitals[name];
+        return countries[name];
+    }
+};
+
+class DummyDatabase : public Database
+{
+    map<string, int> countries;
+
+public:
+    DummyDatabase()
+    {
+        countries["alpha"] = 1;
+        countries["beta"] = 2;
+        countries["gamma"] = 3;
+    }
+
+    int getPopulation(const string &name) override
+    {
+        return countries[name];
     }
 };
 
@@ -49,6 +73,21 @@ struct SingletonRecordFinder
         int result{0};
         for (auto &name : names)
             result += SingletonDatabase::get().getPopulation(name);
+        return result;
+    }
+};
+
+struct ConfigurableRecordFinder
+{
+    Database& db;
+
+    ConfigurableRecordFinder(Database &db) : db(db) {}
+
+    int totalPopulation(vector<string> names)
+    {
+        int result{0};
+        for (auto &name : names)
+            result += db.getPopulation(name);
         return result;
     }
 };

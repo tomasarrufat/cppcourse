@@ -8,7 +8,7 @@ using namespace std;
 
 class SingletonDatabase
 {
-    SingletonDatabase()
+    SingletonDatabase() 
     {
         cout << "Initializing database.\n";
         fstream ifs("countries");

@@ -9,3 +9,10 @@ TEST(RecordFinderTest, SingletonTotalPopulationTest)
     int total = rf.totalPopulation(names);
     EXPECT_EQ(336190541,total);
 }
+
+TEST(RecordFinderTest, DependantTotalPopulationTest)
+{
+    DummyDatabase db;
+    ConfigurableRecordFinder rf{db};
+    EXPECT_EQ(6 ,rf.totalPopulation(vector<string>{"alpha", "beta", "gamma"}));
+}
